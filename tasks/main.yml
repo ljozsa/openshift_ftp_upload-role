@@ -1,0 +1,15 @@
+---
+- name: Install necessary packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - lftp
+
+- name: copy crontab template to the place
+  template:
+    dest: /var/spool/cron/crontabs/root
+    src: crontab.tmpl
+    mode: 0600

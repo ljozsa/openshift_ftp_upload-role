@@ -1,0 +1,6 @@
+* * * * * flock  -n lock_file -c "rsync -av {{ raspicam_default_dir }} {{ openshift_ftp_upload_openshift_ssh_login }}@{{ openshift_ftp_upload_openshift_name }}.rhcloud.com:~/app-root/data/{{ raspicam_name }}/; rsync -av {{ raspicam_default_dir | regex_replace('^(.*/).*/$','\\1') }}_sfpg_data/thumb/{{ raspicam_default_dir | regex_replace('^.*/(?=.*/$)','') }} {{ openshift_ftp_upload_openshift_ssh_login }}@{{ openshift_ftp_upload_openshift_name }}.rhcloud.com:~/app-root/data/_sfpg_data/thumb/"
+* * * * * sleep 20 && lftp -c "open -u {{ openshift_ftp_upload_user }},{{ openshift_ftp_upload_password }} {{ raspicam_ftp_ip }}; put -O {{ openshift_ftp_dest_path }} /run/{{ raspicam_name }}.jpg"
+* * * * * find {{ raspicam_default_dir }} -mmin +15 -delete
+0 * * * * find {{ raspicam_default_dir | regex_replace('^(.*/).*/$','\\1') }}_sfpg_data/thumb/{{ raspicam_default_dir | regex_replace('^.*/(?=.*/$)','') }} -mmin +60 -delete
+* * * * * sleep 40 && killall -9 lftp
+*/5 * * * * ping -q -c1 {{ raspicam_ftp_ip }}  > /dev/null || reboot

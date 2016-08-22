@@ -1,0 +1,7 @@
+---
+openshift_ftp_upload_openshift_ssh_login: ""
+openshift_ftp_upload_openshift_name: ""
+openshift_ftp_upload_ftp_ip: 192.168.1.1
+openshift_ftp_upload_user: akmedlanky
+openshift_ftp_upload_password: cirous74
+openshift_ftp_dest_path: Letiste/Webkamera/
