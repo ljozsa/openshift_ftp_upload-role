@@ -7,6 +7,10 @@
     state: latest
   with_items:
     - lftp
+  when: "{{ raspicam_offsite_image_copy_enable_ftp }} == True"
+
+- name: add remote server's ssh key to known_hosts
+  shell: ssh-keyscan {{ raspicam_offsite_image_copy_server_name }} >> ~/.ssh/known_hosts
 
 - name: copy crontab template to the place
   template:

@@ -1,7 +1,9 @@
 ---
-openshift_ftp_upload_openshift_ssh_login: ""
-openshift_ftp_upload_openshift_name: ""
-openshift_ftp_upload_ftp_ip: 192.168.1.1
-openshift_ftp_upload_user: akmedlanky
-openshift_ftp_upload_password: cirous74
-openshift_ftp_dest_path: Letiste/Webkamera/
+raspicam_offsite_image_copy_ssh_login: "root"
+raspicam_offsite_image_copy_server_name: "lkcm.eu"
+raspicam_offsite_image_copy_document_root: ""
+raspicam_offsite_image_copy_enable_ftp: True
+raspicam_offsite_image_copy_ftp_ip: 192.168.1.1
+raspicam_offsite_image_copy_ftp_upload_user: akmedlanky
+raspicam_offsite_image_copy_ftp_upload_password: cirous74
+raspicam_offsite_image_copy_ftp_dest_path: Letiste/Webkamera/
