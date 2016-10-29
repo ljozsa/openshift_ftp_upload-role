@@ -1,8 +1,8 @@
-* * * * * flock  -n lock_file -c "rsync -av {{ raspicam_default_dir }} {{ raspicam_offsite_image_copy_ssh_login }}@{{ raspicam_offsite_image_copy_server_name }}:{{ raspicam_offsite_image_copy_document_root }}/{{ raspicam_name }}/; rsync -av {{ raspicam_default_dir | regex_replace('^(.*/).*/$','\\1') }}_sfpg_data/thumb/{{ raspicam_default_dir | regex_replace('^.*/(?=.*/$)','') }} {{ raspicam_offsite_image_copy_ssh_login }}@{{ raspicam_offsite_image_copy_server_name }}:{{ raspicam_offsite_image_copy_document_root }}/_sfpg_data/thumb/"
-{% if raspicam_offsite_image_copy_enable_ftp == True %}
-* * * * * sleep 20 && lftp -c "open -u {{ raspicam_offsite_image_copy_ftp_upload_user }},{{ raspicam_offsite_image_copy_ftp_upload_password }} {{ raspicam_offsite_image_copy_ftp_ip }}; put -O {{ raspicam_offsite_image_copy_ftp_dest_path }} /run/{{ raspicam_name }}.jpg"
+* * * * * flock  -n lock_file -c "rsync -av {{ raspicam_default_dir }} {{ raspicam_offsite_image_copy_ssh_login }}@{{ hostvars[groups['webservers'][0]].groups.webservers[0] }}:{{ hostvars[groups['webservers'][0]].sfpg_documentroot }}{{ raspicam_name }}/; rsync -av {{ raspicam_default_dir | regex_replace('^(.*/).*/$','\\1') }}_sfpg_data/thumb/{{ raspicam_default_dir | regex_replace('^.*/(?=.*/$)','') }} {{ raspicam_offsite_image_copy_ssh_login }}@{{ hostvars[groups['webservers'][0]].groups.webservers[0] }}:{{ hostvars[groups['webservers'][0]].sfpg_documentroot }}_sfpg_data/thumb/{{ raspicam_name}}/"
 * * * * * find {{ raspicam_default_dir }} -mmin +15 -delete
 0 * * * * find {{ raspicam_default_dir | regex_replace('^(.*/).*/$','\\1') }}_sfpg_data/thumb/{{ raspicam_default_dir | regex_replace('^.*/(?=.*/$)','') }} -mmin +60 -delete
+{% if raspicam_offsite_image_copy_enable_ftp == True %}
+* * * * * sleep 20 && lftp -c "open -u {{ raspicam_offsite_image_copy_ftp_upload_user }},{{ raspicam_offsite_image_copy_ftp_upload_password }} {{ raspicam_offsite_image_copy_ftp_ip }}; put -O {{ raspicam_offsite_image_copy_ftp_dest_path }} /run/{{ raspicam_name }}.jpg"
 * * * * * sleep 40 && killall -9 lftp
 */5 * * * * ping -q -c1 {{ raspicam_offsite_image_copy_ftp_ip }}  > /dev/null || reboot
 {% endif %}

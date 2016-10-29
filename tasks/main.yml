@@ -10,10 +10,14 @@
   when: "{{ raspicam_offsite_image_copy_enable_ftp }} == True"
 
 - name: add remote server's ssh key to known_hosts
-  shell: ssh-keyscan {{ raspicam_offsite_image_copy_server_name }} >> ~/.ssh/known_hosts
+  shell: ssh-keyscan {{ item }} >> ~/.ssh/known_hosts
+  with_items:
+    - "{{ groups['webservers'] }}"
 
 - name: copy crontab template to the place
   template:
-    dest: /var/spool/cron/crontabs/root
+    dest: /etc/cron.d/{{ item }}
     src: crontab.tmpl
     mode: 0600
+  with_items:
+    - "{{ groups['webservers'] }}"
