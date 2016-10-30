@@ -20,4 +20,4 @@
     src: crontab.tmpl
     mode: 0600
   with_items:
-    - "{{ groups['webservers'] }}"
+    - "{{ groups['webservers'] | regex_replace('\\.','')}}"
